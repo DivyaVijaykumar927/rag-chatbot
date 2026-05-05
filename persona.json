@@ -1,0 +1,43 @@
+{
+  "habits": [
+    "Late sleeper / stays up late",
+    "Skips meals sometimes",
+    "Drinks coffee/tea regularly",
+    "Has exercise habits",
+    "Watches shows/movies regularly",
+    "Uses social media frequently"
+  ],
+  "personal_facts": [
+    "Has parents mentioned in conversations",
+    "Has siblings",
+    "In a romantic relationship",
+    "Currently studying or recently studied",
+    "Working or looking for work",
+    "Has a pet"
+  ],
+  "personality_traits": [
+    "Has a good sense of humor",
+    "Tends to be anxious or overthink",
+    "Emotionally expressive",
+    "Caring and supportive",
+    "Values honesty",
+    "Sometimes indecisive or uncertain"
+  ],
+  "communication_style": [
+    "Writes long, detailed messages",
+    "Uses casual/informal language",
+    "Asks many questions, curious nature"
+  ],
+  "interests": [
+    "Music",
+    "Movies and TV shows",
+    "Food and cooking",
+    "Travel",
+    "Sports",
+    "Reading",
+    "Gaming"
+  ],
+  "emotional_patterns": [
+    "Expressive in conversations"
+  ]
+}
