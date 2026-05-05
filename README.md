@@ -85,9 +85,12 @@ Hosted on Streamlit Cloud:
 - sentence-transformers — for converting messages to vectors locally
 - ChromaDB — stores and searches vectors
 - Streamlit — the chatbot UI
+
+
+
+
+
 ## VIDEO 
-
-
 https://github.com/user-attachments/assets/022870b3-04a6-49d4-a421-d9dc8602cb85
 
 
@@ -95,7 +98,6 @@ https://github.com/user-attachments/assets/022870b3-04a6-49d4-a421-d9dc8602cb85
 <img width="1913" height="684" alt="IMAGEE_3" src="https://github.com/user-attachments/assets/7d985f19-18fe-4c5c-a2b1-87568dd472c1" />
 <img width="1805" height="811" alt="IMAGEE_2" src="https://github.com/user-attachments/assets/33021490-afc6-44f3-a566-25adbf063596" />
 <img width="1906" height="843" alt="IMAGEE_1" src="https://github.com/user-attachments/assets/e4f23719-c9eb-400f-97ed-93bfa0daff52" />
-
 
 
 
