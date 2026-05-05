@@ -141,7 +141,7 @@ def get_answer(query, persona_data):
             from src.rag_engine import retrieve_and_answer
             return retrieve_and_answer(query, persona_data)
         except Exception as e:
-            st.warning("RAG database unavailable, using persona data only.")
+            pass
             return answer_from_persona_only(query, persona_data)
     else:
         return answer_from_persona_only(query, persona_data)
