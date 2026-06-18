@@ -13,93 +13,122 @@ pip install -r requirements.txt
 ```
 
 Create a `.env` file in the root folder and add:
-```
+
+```env
 ANTHROPIC_API_KEY=your_key_here
 ```
 
 Put your CSV file inside the `data/` folder and name it `conversations.csv`
 
-Then run the pipeline first (this processes everything):
+Then run the pipeline first:
+
 ```bash
 python pipeline.py
 ```
 
-This will take a few minutes depending on how large your CSV is. Once it finishes, start the chatbot:
+Once processing is complete, start the chatbot:
+
 ```bash
 streamlit run app.py
 ```
 
-Open your browser at `http://localhost:8501`
+Open your browser at:
+
+```text
+http://localhost:8501
+```
 
 ---
 
 ## How Topic Detection Works
 
-The core idea is simple — if two messages are talking about completely different things, their meaning vectors will point in different directions.
+Every message is converted into a 384-dimensional embedding using the `all-MiniLM-L6-v2` model from Sentence-Transformers.
 
-Every message gets converted into a 384-dimensional vector using the `all-MiniLM-L6-v2` model from sentence-transformers. This runs locally, no API needed.
+For each incoming message, cosine similarity is calculated against the previous 5 messages. When similarity drops below 0.45, a topic boundary is detected and a new topic segment is created.
 
-For each new message, I calculate the cosine similarity between it and the 5 messages before it. If that similarity score drops below 0.45, it means the conversation has shifted to a new topic — so a new topic checkpoint is created.
-
-This gave us 511 topic segments across 10,000+ messages, which felt realistic for a long conversation spanning many days.
+This generated 511+ topic segments across 10,000+ conversation messages.
 
 ---
 
 ## How the RAG Retrieval Works
 
-All topic summaries, 100-message checkpoints, and raw message chunks are stored in ChromaDB (a local vector database).
+All topic summaries, checkpoints, and conversation chunks are stored in ChromaDB.
 
-When you type a question:
-1. The question gets converted to an embedding
-2. ChromaDB does a similarity search to find the 5 most relevant topic summaries
-3. It also finds the 5 most relevant raw message chunks
-4. Both get combined into a context block
-5. That context is sent to Claude API which generates the final answer
+When a user asks a question:
 
-So the system never answers from memory — it always retrieves actual conversation data first.
+1. The query is converted into an embedding.
+2. ChromaDB retrieves the top-5 most relevant topic summaries.
+3. ChromaDB retrieves the top-5 most relevant conversation chunks.
+4. Retrieved context is combined.
+5. Claude API generates a grounded response using retrieved information.
+
+This ensures responses are generated from retrieved conversation data rather than relying on model memory.
 
 ---
 
-## How the Persona Gets Built
+## How Persona Extraction Works
 
-Instead of asking an LLM to guess, the persona extraction scans the actual conversation text for real signals:
+The persona extraction pipeline analyzes actual conversation content to identify:
 
-- **Habits** — looks for patterns like "can't sleep", "2am", "skipped lunch", "went to gym"
-- **Personal facts** — picks up mentions of "my sister", "my boyfriend", "my job", "college exam"
-- **Personality** — detects tone from words like "lol", "honestly", "I always overthink", "I feel bad"
-- **Communication style** — measures average message length, emoji frequency, use of informal words
+* Habits and routines
+* Personal facts and relationships
+* Personality traits
+* Communication style
+* Message behavior patterns
 
-Everything gets saved to `persona.json` in a clean structured format.
+Extracted information is stored in a structured `persona.json` file.
+
+---
+
+## Cloud Deployment
+
+The application was deployed on Microsoft Azure App Service using GitHub Actions CI/CD.
+
+Deployment workflow:
+
+1. Source code hosted on GitHub.
+2. Azure Deployment Center connected to the GitHub repository.
+3. GitHub Actions automatically builds and deploys the application.
+4. Azure App Service hosts the chatbot and manages runtime infrastructure.
+5. Environment variables such as `ANTHROPIC_API_KEY` are securely configured through Azure App Service settings.
+
+This enables cloud-based hosting, automated deployment, and scalable access to the RAG application.
 
 ---
 
 ## Live Demo
 
-Hosted on Streamlit Cloud:
-`https://rag-chatbot-divya.streamlit.app/`
+Streamlit Cloud:
+
+https://rag-chatbot-divya.streamlit.app/
+
+Azure App Service:
+
+Deployed using Microsoft Azure App Service with GitHub Actions CI/CD.
 
 ---
 
-## Tech Used
+## Tech Stack
 
-- sentence-transformers — for converting messages to vectors locally
-- ChromaDB — stores and searches vectors
-- Streamlit — the chatbot UI
+* Python 3.10
+* Streamlit
+* Sentence-Transformers
+* ChromaDB
+* Scikit-Learn
+* NumPy
+* Pandas
+* Anthropic Claude API
+* Microsoft Azure App Service
+* GitHub Actions CI/CD
 
+---
 
+## Features
 
-
-
-## VIDEO 
-https://github.com/user-attachments/assets/022870b3-04a6-49d4-a421-d9dc8602cb85
-
-
-## IMAGES
-<img width="1913" height="684" alt="IMAGEE_3" src="https://github.com/user-attachments/assets/7d985f19-18fe-4c5c-a2b1-87568dd472c1" />
-<img width="1805" height="811" alt="IMAGEE_2" src="https://github.com/user-attachments/assets/33021490-afc6-44f3-a566-25adbf063596" />
-<img width="1906" height="843" alt="IMAGEE_1" src="https://github.com/user-attachments/assets/e4f23719-c9eb-400f-97ed-93bfa0daff52" />
-
-
-
-- Anthropic Claude API — generates final answers from retrieved context
-- Python 3.10
+* Semantic Topic Segmentation
+* Retrieval-Augmented Generation (RAG)
+* Persona Extraction
+* Vector Search using ChromaDB
+* Context-Aware Question Answering
+* Azure Cloud Deployment
+* Automated CI/CD Pipeline
