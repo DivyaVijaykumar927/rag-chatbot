@@ -6,7 +6,7 @@ A system that reads through chat conversations, understands what topics were dis
 
 ## Setup and Running
 
-Make sure Python 3.10 is installed. Then:
+Make sure Python 3.11 is installed. Then:
 
 ```bash
 pip install -r requirements.txt
